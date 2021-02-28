@@ -1,0 +1,183 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: Swagger RestFul API
+schemes: [http]
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  JWT:
+    type: apiKey
+    in: header
+    scheme: JWT
+    name: Authorization
+paths:
+  /ip/users:
+   post:
+    operationId: new_user
+    tags:
+    - Registration
+    summary: Add a new user
+    description: Registration
+    parameters:
+      - name: body
+        in: body
+        description: User to create
+        required: True
+        schema:
+         type: object
+         properties:
+          username:
+            type: string
+            description: username
+          password:
+            type: string
+            description: password
+    responses:
+      201:
+        description: Successfully created a new user
+  /auth:
+    post:
+      operationId: login
+      tags:
+        - Login
+      summary: Logs user into the system
+      description: Login
+      parameters:
+        - name: body
+          in: body
+          description: Login
+          required: True
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                description: username
+              password:
+                type: string
+                description: password
+      responses:
+        201:
+          description: JWT token
+
+
+  /protected/ip:
+    get:
+      security:
+        -JWT: [ ]
+      operationId: get_ips
+      tags:
+        - IP address
+      summary: All IP addresses in the database
+      responses:
+        200:
+          description: Succes
+          schema:
+            type: array
+            items:
+              properties:
+                ip_address:
+                  type: string
+                  description: IP address
+                country:
+                  type: string
+                  description: Country of ip
+    post:
+      security:
+        - JWT: [ ]
+      operationId: create_ip
+      tags:
+        - IP address
+      summary: Add a new IP address to the database
+      description: Create a new IP address
+      parameters:
+      - name: body
+        in: body
+        description: IP address to create
+        required: True
+        schema:
+          type: object
+          properties:
+            ip_address:
+              type: string
+              description: IP address
+            country:
+              type: string
+              description: Country of IP address
+      responses:
+        201:
+          description: Successfully created a new IP address
+
+  /protected/ip/{ip_address}:
+    get:
+      security:
+        - JWT: [ ]
+      operationId: handle_ip
+      tags:
+        - IP address
+      summary: Country of IP address
+      parameters:
+        - name: ip_address
+          in: path
+          description: IP address
+          type: string
+          required: true
+      responses:
+        200:
+          description: Successfully get a IP address
+          schema:
+            type: object
+            properties:
+              country:
+                type: string
+                description: Country
+    put:
+      security:
+        - JWT: [ ]
+      operationId: handle_ip
+      tags:
+        - IP address
+      summary: Change country of IP address
+      description: Change country of IP address
+      parameters:
+        - name: ip_address
+          in: path
+          description: IP address
+          type: string
+          required: true
+        - name: body
+          in: body
+          description: country of IP address
+          required: true
+          schema:
+            type: object
+            properties:
+             country:
+               type: string
+               description: Country of IP address
+      responses:
+        200:
+          description: Successfully update IP address
+    delete:
+      security:
+        - JWT: [ ]
+      operationId: handle_ip
+      tags:
+        - IP address
+      summary: Delete IP address from database
+      description: Delete a IP address
+      parameters:
+        - name: ip_address
+          in: path
+          description: IP address
+          type: string
+          required: true
+      responses:
+        200:
+          description: Successfully deleted a IP address
+
+
+
