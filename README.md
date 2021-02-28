@@ -16,7 +16,7 @@ http://127.0.0.1:5000/swagger
 ![Swagger](./images/swagger.jpg)
 
 
-![Swagger](./images/login.jpg)
+![Swagger](./images/login.JPG)
 
 
 ## Technologies
