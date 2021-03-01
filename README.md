@@ -19,9 +19,8 @@ db_endpoint = <db_endpoint>
 ```
 Use --mount command to add to the container.
 ### Running apllication
-Open Terminal in project path and use below commands
-
-
+Open Terminal in project path and use below commands:
+```
 $ flask run
 ```
 ### Swagger
