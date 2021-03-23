@@ -37,7 +37,9 @@ paths:
             description: password
     responses:
       201:
-        description: Successfully created a new user
+        description: Successfully created a new user.
+      400:
+        description: User has already exist.
   /auth:
     post:
       operationId: login
@@ -62,6 +64,10 @@ paths:
       responses:
         201:
           description: JWT token
+        400:
+          description: The request data is not in JSON format
+        401:
+          description: Invalid credentials
 
 
   /protected/ip:
@@ -110,6 +116,9 @@ paths:
       responses:
         201:
           description: Successfully created a new IP address
+        400:
+           description: The request data is not in JSON format
+
 
   /protected/ip/{ip_address}:
     get:
@@ -134,6 +143,8 @@ paths:
               country:
                 type: string
                 description: Country
+        500:
+          description: Incorrect IP address
     put:
       security:
         - JWT: [ ]
@@ -161,6 +172,8 @@ paths:
       responses:
         200:
           description: Successfully update IP address
+        400:
+           description: The request data is not in JSON format
     delete:
       security:
         - JWT: [ ]
@@ -178,6 +191,8 @@ paths:
       responses:
         200:
           description: Successfully deleted a IP address
+        400:
+          description: The request data is not in JSON format
 
 
 

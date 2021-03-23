@@ -128,11 +128,14 @@ def handle_ip(ip_address):
     if request.method == 'GET':
         if ip == None:
             response_get, status_code = apiClient.get_country(ip_address)
-            country = response_get['country_name']
-            ip_new = IpModel(ip_address=str(ip_address), country=str(country))
-            db.session.add(ip_new)
-            db.session.commit()
-            return country
+            if status_code != 500:
+                country = response_get['country_name']
+                ip_new = IpModel(ip_address=str(ip_address), country=str(country))
+                db.session.add(ip_new)
+                db.session.commit()
+                return country
+            if status_code == 500:
+                return not_found('IP address is not correct')
         if ip != None:
             return ip.country
         else:
@@ -154,8 +157,6 @@ def handle_ip(ip_address):
     db.session.commit()
 
     return jsonify({'message': f'IP address: {ip.ip_address} has been deleted successfully.'})
-
-
 
 @app.route('/', methods=['GET'])
 def index():
