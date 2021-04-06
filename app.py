@@ -4,9 +4,8 @@ from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_swagger_ui import get_swaggerui_blueprint
-from werkzeug.security import safe_str_cmp
-
 import apiClient
+import authorization
 from config_read import configReader
 from error_messege import not_found, bad_request
 from routes import request_api
@@ -38,20 +37,7 @@ ma = Marshmallow(app)
 
 migrate = Migrate(app,db)
 
-def authenticate(username, password_hash):
-    from models import UserModel
-    user = UserModel.query.filter_by(username=username).first()
-    if user and safe_str_cmp(user.password_hash.encode('utf-8'), password_hash.encode('utf-8')):
-        return user
-
-def identity(payload):
-    from models import UserModel
-    id = payload['identity']
-    return UserModel.query.filter_by(id=id).first()
-
-
-jwt = JWT(app, authenticate, identity)
-
+jwt = JWT(app, authorization.authenticate, authorization.identity)
 
 @app.route('/ip/users', methods=['POST'])
 def new_user():
